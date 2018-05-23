@@ -6,6 +6,9 @@ words = ["hardware","keyboard","memory","disk","computer","display","software","
 @word_display = "_"*@word.length
 @guesses_remaining = 11
 
+@visual = [" ", "          ", "          ", "          ", "          ",
+   "          ", "          ", " "]
+
 puts "Let's play a game of hangman"
 puts "I'll pick the word"
 puts "Word: #{@word_display}"
@@ -35,16 +38,47 @@ def guess_checker(user_guess)
     @guesses_remaining -= 1
   end
 
+# visual[0] & [7] are blank spaces to keep the feedback more readable
+  case @guesses_remaining
+  when 10
+    @visual[6] = "__________"
+  when 9
+    2.upto 6 do |x|
+    @visual[x][1] = "|"
+    end
+  when 8
+    @visual[1] = "__________"
+  when 7
+    @visual[2][4] = "/"
+    @visual[3][3] = "/"
+  when 6
+    @visual[2][8] = "|"
+  when 5
+    @visual[3][8] = "Ω"
+  when 4
+    @visual[4][8] = "0"
+  when 3
+    @visual[4][7] = "¯"
+  when 2
+    @visual[4][9] = "¯"
+  when 1
+    @visual[5][7] = "/"
+  when 0
+    @visual[5][9] = "\\"
+  end
+
   puts "Word: #{@word_display}"
 
   if @word_display == @word
     puts "Congratulations, you guessed my word!"
   elsif @guesses_remaining == 0
+    puts @visual
     puts "Game over, I win!"
   else
     @guesses << user_guess
     puts "You've guessed: #{@guesses.join(' ')}"
     puts "Guesses remaining: #{@guesses_remaining}"
+    puts @visual
     guess
   end
 end
@@ -66,5 +100,4 @@ end
 guess
 
 # to do:
-# add visual of gallows
 # let player pick the word
